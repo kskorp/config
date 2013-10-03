@@ -1,6 +1,37 @@
-@()
+@(config: Config, editConfigForm: Form[Config], send: Boolean)
 
-@main("Edit") {
-    <p>Config edit</p>    
-    
+@import helper._
+
+@main("Edit - " + config.name) {
+<header><h1>Config Details</h1></header>
+
+@if(send){
+<div class="prompt">
+	@if(editConfigForm.errors.isEmpty){
+		<p>Zmiany zostały zapisane</p>
+	}
+	@for(error <- editConfigForm.errors){
+		<p>Pole @error.key z błędem @error.message</p>
+	}
+</div>
+}
+
+@form(routes.Application.editpost(config.ref)) {
+	<div id="configEdit">
+		<input type="hidden" name="config.ref" value="@config.ref" />
+		<div class="field">
+			<label for="config.name">Name:</label>
+			<input type="text" name="config.name" id="config.name" value="@config.name">
+		</div>
+		<div class="field">
+			<label for="config.timestamp">Timestamp:</label>
+			<input type="text" name="config.timestamp" id="config.timestamp" value="@config.timestamp" />
+		</div>
+		
+		<div class="buttons">
+			<input type="submit" value="Save Changes" class="button">
+			<input type="button" value="Discard Changes" onclick="location = '@routes.Application.list'" class="button">
+		</div>
+	</div>
+}
 }

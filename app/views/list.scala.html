@@ -1,13 +1,13 @@
-@(configurations: List[Configuration])
+@(configs: List[Config])
 
 @main("a") {
-	<header><h1>Configuration list</h1></header>	
+	<header><h1>Config list</h1></header>	
 
 	<div class="configList">
-		@for((configuration, i) <- configurations.zipWithIndex) {
-		<p>@configuration.name
-			<a href="@routes.Application.edit(configuration.ref)">edit</a>
-			<a href="@routes.Application.delete(configuration.ref)">delete</a>
+		@for((config, i) <- configs.zipWithIndex) {
+		<p>@config.name
+			<a href="@routes.Application.edit(config.ref)">edit</a>
+			<a href="@routes.Application.delete(config.ref)">delete</a>
 		</p>
 		}
 	</div>
