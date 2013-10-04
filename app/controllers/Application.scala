@@ -12,9 +12,9 @@ object Application extends Controller {
 	val editConfigForm = Form(
 		"config" ->
 			mapping(
-				"ref" -> longNumber,
-				"name" -> text,
-				"timestamp" -> longNumber
+				"ref" -> optional(longNumber),
+				"name" -> nonEmptyText(3, 20),
+				"timestamp" -> optional(longNumber)
 			)(Config.apply)(Config.unapply)
 	)
   
@@ -23,12 +23,12 @@ object Application extends Controller {
 	}
 	
 	def list = Action {
-		val configs = dao.findAll;
+		val configs = dao.findAll
 		Ok(views.html.list(configs))
 	}
 	
-	def create() = Action {
-		val config = Config(0, "", 0)
+	def create = Action {
+		val config = Config()
 		Ok(views.html.edit(config, editConfigForm, false))
 	}
 	
@@ -39,14 +39,15 @@ object Application extends Controller {
 	}
 	
 	def editpost(ref: Long) = Action { implicit request =>
-		dao.findByRef(ref).map { config =>
+		val config = if (ref == 0) Some(Config()) else dao.findByRef(ref)
+		config.map { config =>
 			editConfigForm.bindFromRequest.fold(
-				errors => BadRequest(views.html.edit(config, errors, true)),
+				formWithErrors => BadRequest(views.html.edit(config, formWithErrors, true)),
 				config => Ok(views.html.edit(config, editConfigForm, true))
 			)
 		}.getOrElse(NotFound)
 	}
 	
 	def delete(ref: Long) = TODO
-  
+
 }

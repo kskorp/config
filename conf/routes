@@ -5,10 +5,10 @@
 # Home page
 GET		/                           controllers.Application.index
 GET		/list						controllers.Application.list
-GET		/create/					controllers.Application.create
-GET		/edit/$ref<[0-9]+>			controllers.Application.edit(ref: Long)
-POST    /edit/$ref<[0-9]+>     		controllers.Application.editpost(ref: Long)
-GET		/del/$ref<[0-9]+>			controllers.Application.delete(ref: Long)
+GET		/create						controllers.Application.create
+GET		/edit/:ref					controllers.Application.edit(ref: Long)
+POST    /edit/:ref		    		controllers.Application.editpost(ref: Long)
+GET		/del/:ref					controllers.Application.delete(ref: Long)
 
 
 # Map static resources from the /public folder to the /assets URL path

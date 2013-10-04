@@ -1,22 +1,24 @@
 package models
 
-case class Config(val ref: Long, val name: String, val timestamp: Long)
+case class Config(ref: Option[Long] = None, name: String = "", timestamp: Option[Long] = None)
 
 trait ConfigDAOTrait {
-	def findAll: List[Config]
-	
+	def findAll: Iterable[Config]
 	def findByRef(ref: Long): Option[Config]
+	def deleteByRef(ref: Long): Unit
 }
 
 class ConfigDAO extends ConfigDAOTrait {
-	val configs = Set(
-	    Config(1, "Conf1", 1380728153),
-	    Config(2, "Conf2", 1380693842),
-	    Config(3, "Conf3", 1380684275)
+	val configs = Seq(
+	    Config(Option(1), "Conf1", Option(1380728153)),
+	    Config(Option(2), "Conf2", Option(1380693842)),
+	    Config(Option(3), "Conf3", Option(1380684275))
 	)
 	
-	def findAll = this.configs.toList.sortBy(_.ref)
+	def findAll = this.configs
 	
-	def findByRef(ref: Long) = this.configs.find(_.ref == ref)
+	def findByRef(ref: Long) = this.configs.find(_.ref.get == ref)
+	
+	def deleteByRef(ref: Long) = {}
 }
 

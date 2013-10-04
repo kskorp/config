@@ -1,13 +1,15 @@
-@(configs: List[Config])
+@(configs: Iterable[Config])
 
-@main("a") {
+@main("Last Added") {
 	<header><h1>Config list</h1></header>	
 
+	<input type="button" value="Create new config" onclick="location = '@routes.Application.create'">
+	
 	<div class="configList">
-		@for((config, i) <- configs.zipWithIndex) {
+		@for(config <- configs) {
 		<p>@config.name
-			<a href="@routes.Application.edit(config.ref)">edit</a>
-			<a href="@routes.Application.delete(config.ref)">delete</a>
+			<input type="button" value="Edit" onclick="location = '@routes.Application.edit(config.ref.get)'">
+			<input type="button" value="Delete" onclick="location = '@routes.Application.delete(config.ref.get)'">
 		</p>
 		}
 	</div>
